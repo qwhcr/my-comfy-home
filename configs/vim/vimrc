@@ -1,0 +1,129 @@
+call plug#begin()
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'jeffkreeftmeijer/vim-numbertoggle'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'preservim/nerdcommenter'
+Plug 'preservim/nerdtree'
+Plug 'morhetz/gruvbox'
+Plug 'haya14busa/incsearch.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'Yggdroot/indentLine'
+Plug 'jceb/vim-orgmode'
+Plug 'tpope/vim-speeddating'
+Plug 'Chiel92/vim-autoformat'
+
+call plug#end()
+
+let mapleader = " "
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+map <Leader>s <Plug>(easymotion-sn)
+
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+" setting for gruvbox
+autocmd vimenter * colorscheme gruvbox
+nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
+nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
+nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
+
+nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
+nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
+nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
+
+set laststatus=2
+if !has('gui_running')
+    set t_Co=256
+    map <Leader><Leader>n <A-n>
+endif
+
+set number relativenumber
+set updatetime=100
+
+filetype plugin on
+
+map <C-p> :NERDTreeToggle<CR>
+
+" save my pinky
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader><Leader>q :wq<CR>
+
+nnoremap <Leader>o :Files<CR>
+nnoremap <Leader>F :Ag
+
+" custom movement setting, actually overriden by karabiner
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+
+set backspace=2
+
+set timeoutlen=1000 ttimeoutlen=0
+
+let g:lightline = {
+            \ 'colorscheme': 'wombat',
+            \ 'active': {
+            \   'left': [ [ 'mode', 'paste' ],
+            \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+            \ },
+            \ 'component_function': {
+            \   'cocstatus': 'coc#status'
+            \ },
+            \ }
+
+" Use auocmd to force lightline update.
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+
+nnoremap gd :call CocAction('jumpDefinition', 'tab drop')<CR>
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:indent_guides_enable_on_vim_startup = 1
+
+set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab
+" per filetype tab setting
+autocmd Filetype javascript setlocal tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
+autocmd Filetype java setlocal tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
+
+nnoremap th :tabfirst<CR>
+nnoremap tj :tabnext<CR>
+nnoremap tk :tabprev<CR>
+nnoremap tl :tablast<CR>
+nnoremap tn :tabnew<CR>
+nnoremap tc :tabclose<CR>
+
+nnoremap <Leader>> :vertical resize +10<CR>
+nnoremap <Leader>< :vertical resize -10<CR>
+
+noremap <Leader><Leader>l :Autoformat<CR>
