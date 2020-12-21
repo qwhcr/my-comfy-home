@@ -29,7 +29,12 @@ map <Leader>s <Plug>(easymotion-sn)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 " setting for gruvbox
-autocmd vimenter * colorscheme gruvbox
+colorscheme gruvbox
+set t_Co=256
+set bg=dark
+let g:gruvbox_contrast_dark="soft"
+set cursorline
+hi CursorLine cterm=NONE ctermbg=235
 nnoremap <silent> [oh :call gruvbox#hls_show()<CR>
 nnoremap <silent> ]oh :call gruvbox#hls_hide()<CR>
 nnoremap <silent> coh :call gruvbox#hls_toggle()<CR>
@@ -46,6 +51,11 @@ endif
 
 set number relativenumber
 set updatetime=100
+
+set wrap
+set linebreak
+set colorcolumn=81 "not exeeding this line
+hi colorcolumn ctermbg=237
 
 filetype plugin on
 
@@ -82,18 +92,28 @@ let g:lightline = {
 
 " Use auocmd to force lightline update.
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 nnoremap gd :call CocAction('jumpDefinition', 'tab drop')<CR>
+nnoremap <Leader>di :CocDiagnostic<CR>
+nmap <leader>rn <Plug>(coc-rename)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <leader>cs :CocRestart<CR>
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-    else
-        call CocAction('doHover')
-    endif
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
 endfunction
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -127,3 +147,5 @@ nnoremap <Leader>> :vertical resize +10<CR>
 nnoremap <Leader>< :vertical resize -10<CR>
 
 noremap <Leader><Leader>l :Autoformat<CR>
+noremap <Leader><Leader>y "+y
+noremap <Leader><Leader>p "+p

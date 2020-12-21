@@ -106,7 +106,7 @@ if [ -f '/Users/huangmr./google-cloud-sdk/path.zsh.inc' ]; then . '/Users/huangm
 if [ -f '/Users/huangmr./google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/huangmr./google-cloud-sdk/completion.zsh.inc'; fi
 
 export PATH=$PATH:/usr/local/go/bin
-export GOPATH="/Users/huangmr./go:/Users/huangmr./dev/go:/Users/huangmr./Cs/6.824/6.824-golabs-2020"
+export GOPATH="/Users/huangmr./go:/Users/huangmr./dev/go:/Users/huangmr./Cs/6.824/6.824-golabs-2020:/Users/huangmr./dev/epl/light-weight-execution-tracer/backend"
 export PATH=/Users/huangmr./go/bin:$PATH
 export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
 export WSK_CONFIG_FILE=/Users/huangmr./dev/epl/openwhisk-devtools/docker-compose/.wskprops
@@ -145,3 +145,10 @@ alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 export PATH="/Applications/CMake.app/Contents/bin":"$PATH"
 
 export PATH="/Users/huangmr./drone/gcc-arm-none-eabi-9-2019-q4-major/bin":"$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
