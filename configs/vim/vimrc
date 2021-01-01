@@ -79,6 +79,13 @@ set backspace=2
 
 set timeoutlen=1000 ttimeoutlen=0
 
+set hidden
+set nobackup
+set nowritebackup
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+
 let g:lightline = {
             \ 'colorscheme': 'wombat',
             \ 'active': {
@@ -96,12 +103,30 @@ autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 nnoremap gd :call CocAction('jumpDefinition', 'tab drop')<CR>
-nnoremap <Leader>di :CocDiagnostic<CR>
+"nnoremap <Leader>di :CocDiagnostic<CR>
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 nmap <leader>rn <Plug>(coc-rename)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 nmap <leader>cs :CocRestart<CR>
+
+" Formatting selected code.
+xmap <leader>l  <Plug>(coc-format-selected)
+nmap <leader>l  <Plug>(coc-format-selected)
+
+command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 POR   :call     CocAction('runCommand', 'pyright.organizeimports')
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -128,6 +153,18 @@ function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
 let g:indent_guides_enable_on_vim_startup = 1
 
