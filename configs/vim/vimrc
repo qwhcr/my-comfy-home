@@ -22,10 +22,9 @@ Plug 'thaerkh/vim-workspace'
 call plug#end()
 
 let mapleader = " "
-map <Leader>l <Plug>(easymotion-lineforward)
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
+map <Leader>w <Plug>(easymotion-bd-wl)
 map <Leader>s <Plug>(easymotion-sn)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
@@ -36,8 +35,7 @@ set bg=dark
 let g:gruvbox_contrast_dark="soft"
 set cursorline
 hi CursorLine cterm=NONE ctermbg=235
-nnoremap <silent> shl :call gruvbox#hls_show()<CR>
-nnoremap <silent> hhl :call gruvbox#hls_hide()<CR>
+
 nnoremap <silent> thl :call gruvbox#hls_toggle()<CR>
 
 nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
@@ -45,6 +43,7 @@ nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
 nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
 
 set sessionoptions-=blank
+let g:workspace_session_disable_on_args = 1
 
 set laststatus=2
 if !has('gui_running')
@@ -64,10 +63,8 @@ filetype plugin on
 
 map <C-p> :NERDTreeToggle<CR>
 
-" save my pinky
-nnoremap <Leader>q :q<CR>
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader><Leader>q :wq<CR>
+nnoremap <Leader><Leader>q :qa<CR>
+nnoremap <Leader>tw :ToggleWorkspace<CR>
 
 nnoremap <Leader>o :Files<CR>
 nnoremap <Leader>F :Ag
@@ -196,6 +193,6 @@ nnoremap tc :tabclose<CR>
 nnoremap <Leader>> :vertical resize +10<CR>
 nnoremap <Leader>< :vertical resize -10<CR>
 
-noremap <Leader><Leader>l :Autoformat<CR>
+noremap <Leader><Leader>l :Format<CR>
 noremap <Leader><Leader>y "+y
 noremap <Leader><Leader>p "+p
