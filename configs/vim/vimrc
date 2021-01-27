@@ -18,9 +18,10 @@ Plug 'jceb/vim-orgmode'
 Plug 'tpope/vim-speeddating'
 Plug 'Chiel92/vim-autoformat'
 Plug 'thaerkh/vim-workspace'
+Plug 'kamykn/spelunker.vim'
+Plug 'junegunn/goyo.vim'
 
 call plug#end()
-
 let mapleader = " "
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
@@ -42,6 +43,14 @@ nnoremap * :let @/ = ""<CR>:call gruvbox#hls_show()<CR>*
 nnoremap / :let @/ = ""<CR>:call gruvbox#hls_show()<CR>/
 nnoremap ? :let @/ = ""<CR>:call gruvbox#hls_show()<CR>?
 
+nnoremap <Leader>ZA :SpelunkerAddAll<CR>
+let g:spelunker_disable_email_checking = 1
+let g:spelunker_highlight_type = 2
+let g:spelunker_disable_acronym_checking = 1
+let g:spelunker_disable_account_name_checking = 1
+
+nnoremap <Leader>Wc :w !wc<CR>
+
 set sessionoptions-=blank
 let g:workspace_session_disable_on_args = 1
 
@@ -56,7 +65,7 @@ set updatetime=100
 
 set wrap
 set linebreak
-set colorcolumn=81 "not exeeding this line
+set colorcolumn=81 "not exceeding this line
 hi colorcolumn ctermbg=237
 
 filetype plugin on
@@ -67,9 +76,9 @@ nnoremap <Leader><Leader>q :qa<CR>
 nnoremap <Leader>tw :ToggleWorkspace<CR>
 
 nnoremap <Leader>o :Files<CR>
-nnoremap <Leader>F :Ag
+nnoremap <Leader>F :Ag<CR>
 
-" custom movement setting, actually overriden by karabiner
+" custom movement setting, actually overridden by karabiner
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
@@ -107,7 +116,7 @@ function! LightlineFilename()
     return expand('%')
 endfunction
 
-" Use auocmd to force lightline update.
+" Use autocmd to force lightline update.
 autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -182,13 +191,15 @@ set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab
 " per filetype tab setting
 autocmd Filetype javascript setlocal tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
 autocmd Filetype java setlocal tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
+autocmd Filetype text setlocal textwidth=80
+autocmd BufEnter * if &filetype == "" | setlocal ft=text textwidth=80 | endif
 
 nnoremap th :tabfirst<CR>
 nnoremap tj :tabnext<CR>
 nnoremap tk :tabprev<CR>
 nnoremap tl :tablast<CR>
-nnoremap tn :tabnew<CR>
-nnoremap tc :tabclose<CR>
+nnoremap tc :tabnew<CR>
+nnoremap tx :tabclose<CR>
 
 nnoremap <Leader>> :vertical resize +10<CR>
 nnoremap <Leader>< :vertical resize -10<CR>
